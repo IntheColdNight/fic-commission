@@ -20,7 +20,7 @@
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans Thai",system-ui,sans-serif;overflow-x:clip}
 h1,h2,h3,.big{font-family:Mali,"Noto Sans Thai",sans-serif}
-.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#5867c4 0%,#7f8fdc 55%,#b9cdfb 100%);color:#fff;padding:clamp(24px,4vw,48px) max(5vw,16px) 0}
+.hero{position:relative;overflow:hidden;padding-top:64px!important;background:linear-gradient(180deg,#5867c4 0%,#7f8fdc 55%,#b9cdfb 100%);color:#fff;padding:clamp(24px,4vw,48px) max(5vw,16px) 0}
 .hero-in{max-width:1180px;margin:auto;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:end;gap:24px}
 .hero h1{font-size:clamp(36px,6vw,58px);line-height:1.05;margin:0 0 10px;text-wrap:balance;text-shadow:0 3px 0 rgba(40,46,120,.25)}
 .hero p{margin:0 0 28px;font-size:17px;max-width:34em;opacity:.95}
@@ -70,6 +70,10 @@ input:focus,textarea:focus{outline:none;border-color:var(--blue)}
 .bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--card);border-top:1px solid var(--line);padding:10px 16px;justify-content:space-between;align-items:center;gap:12px}
 .bar .big{font-size:26px;color:var(--blue)}.bar a{color:var(--blue);font-weight:700;text-decoration:none}}
 @media(max-width:600px){.hero-in{grid-template-columns:minmax(0,1fr)}.hero img{width:220px}.hero p{margin-bottom:8px}}
+.lang{position:absolute;top:14px;right:max(5vw,16px);z-index:2;display:flex;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);border-radius:99px;padding:3px}
+.lang button{min-width:52px;min-height:36px;border:0;border-radius:99px;background:none;color:#fff;font:600 15px Mali,sans-serif;cursor:pointer}
+.lang button[aria-pressed=true]{background:#fff;color:#4b58b8}
+.lang button:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 /* quotation sheet for PDF */
 #sheet{position:fixed;left:-10000px;top:0;width:794px;background:#fff;color:#23285a;font:15px/1.6 "Noto Sans Thai",sans-serif;padding:44px 52px}
 #sheet .top{display:flex;align-items:center;gap:18px;background:linear-gradient(120deg,#6f7fd8,#b9cdfb);border-radius:20px;color:#fff;padding:18px 24px}
@@ -89,78 +93,77 @@ input:focus,textarea:focus{outline:none;border-color:var(--blue)}
 <body>
 <header class="hero">
   <div class="snow" id="snow"></div>
+  <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">EN</button></div>
   <div class="hero-in">
     <div>
-      <span class="tag">เปิดรับคอมมิชชั่นฟิค</span>
+      <span class="tag" data-t="tag"></span>
       <h1>In the Cold Night</h1>
-      <p>เลือกแบบงาน ใส่รายละเอียด แล้วดูราคาได้ทันที เสร็จแล้วกดบันทึกใบเสนอราคาเป็น PDF ส่งมาให้ไรต์ได้เลยนะ</p>
+      <p data-t="intro"></p>
     </div>
-    <img src="logo.png" alt="มาสคอต In the Cold Night">
+    <img src="logo.png" alt="In the Cold Night">
   </div>
 </header>
 
 <main class="wrap">
 <form id="f" autocomplete="off">
+  <section class="card" id="sLang">
+    <h2><b>✦</b><span data-t="ficLang"></span></h2>
+    <div class="opts"><label class="opt"><input type="radio" name="ficlang" value="ENG" checked><span><strong>ENG</strong></span></label><label class="opt"><input type="radio" name="ficlang" value="ไทย"><span><strong>ไทย</strong></span></label></div>
+  </section>
   <section class="card">
-    <h2><b>1</b>อยากคอมมิชงานแนวไหน</h2>
-    <p class="hint">เลือกได้ 1 แบบต่อใบเสนอราคา</p>
+    <h2><b>1</b><span data-t="s1"></span></h2>
+    <p class="hint" data-t="s1h"></p>
     <div class="opts" id="types"></div>
   </section>
 
   <section class="card hide" id="sAmount">
-    <h2><b>2</b><span id="amtTitle">จำนวน</span></h2>
-    <label class="f" for="qty" id="qtyLabel">จำนวน</label>
-    <div class="num"><button type="button" data-step="-1" aria-label="ลด">−</button><input type="number" id="qty" inputmode="numeric" min="1"><button type="button" data-step="1" aria-label="เพิ่ม">+</button><span class="u" id="unit"></span></div>
+    <h2><b>2</b><span id="amtTitle"></span></h2>
+    <label class="f" for="qty" id="qtyLabel"></label>
+    <div class="num"><button type="button" data-step="-1" aria-label="-">−</button><input type="number" id="qty" inputmode="numeric" min="1"><button type="button" data-step="1" aria-label="+">+</button><span class="u" id="unit"></span></div>
     <div class="note hide" id="minNote"></div>
-    <label class="f">ลงแบบไหน</label>
+    <label class="f" data-t="post"></label>
     <div class="opts" id="posts"></div>
   </section>
 
   <section class="card hide" id="sCover">
-    <h2><b>3</b>อยากคอมมิชปกไหม?</h2>
-    <p class="hint">สำหรับเรื่องที่ลงใน ReadAWrite</p>
-    <div class="opts">
-      <label class="opt"><input type="radio" name="cover" value="no" checked><span><strong>ไม่สนใจ</strong></span></label>
-      <label class="opt"><input type="radio" name="cover" value="yes"><span><strong>อยากได้ปก</strong></span></label>
-    </div>
+    <h2><b>3</b><span data-t="s3"></span></h2>
+    <p class="hint" data-t="s3h"></p>
+    <div class="opts" id="covers"></div>
     <div id="coverMore" class="hide">
-      <label class="f">นักวาด</label>
-      <div class="opts">
-        <label class="opt"><input type="radio" name="artist" value="mine" checked><span><strong>มีนักวาดในใจ</strong><small>อยากให้ไรต์ติดต่อให้</small></span></label>
-        <label class="opt"><input type="radio" name="artist" value="writer"><span><strong>ให้ไรต์เลือกให้</strong><small>ไรต์เลือกแล้วติดต่อเอง</small></span></label>
-      </div>
-      <div id="artistBox"><label class="f" for="artistName">ชื่อ / ลิงก์นักวาด</label><input type="text" id="artistName" placeholder="เช่น @artist บน X"></div>
-      <label class="f" for="coverBudget">งบค่าปก (บาท)</label>
-      <input type="number" id="coverBudget" min="0" inputmode="numeric" placeholder="เช่น 500">
+      <label class="f" data-t="artist"></label>
+      <div class="opts" id="artists"></div>
+      <div id="artistBox"><label class="f" for="artistName" data-t="artistName"></label><input type="text" id="artistName" data-tp="artistNameP"></div>
+      <label class="f" for="coverBudget" data-t="budget"></label>
+      <input type="number" id="coverBudget" min="0" inputmode="numeric" data-tp="budgetP">
     </div>
   </section>
 
   <section class="card hide" id="sBrief">
-    <h2><b id="briefNo">4</b>บรีฟงาน</h2>
-    <label class="f" for="cname">ชื่อลูกค้า <em>*</em></label><input type="text" id="cname" placeholder="ชื่อที่ให้ไรต์เรียก">
-    <label class="f" for="contact">ช่องทางติดต่อ <em>*</em></label><input type="text" id="contact" placeholder="เช่น X @yourname / LINE">
-    <label class="f" for="pair">คู่ <em>*</em></label><input type="text" id="pair" placeholder="จะ A x B หรือ B x A ก็ได้นะ ไรต์อร่อยหมด ♡">
-    <label class="f">OOC ได้แค่ไหน</label>
-    <div class="opts"><label class="opt"><input type="radio" name="ooc" value="ได้นิดหน่อย" checked><span><strong>ได้นิดหน่อย</strong></span></label><label class="opt"><input type="radio" name="ooc" value="เต็มที่เลยจ้า"><span><strong>เต็มที่เลยจ้า</strong></span></label></div>
-    <label class="f" for="genre">แนวที่อยากได้</label><input type="text" id="genre" placeholder="เช่น โรแมนซ์ ฟลัฟ แองสต์ PWP AU มหาลัย">
-    <label class="f" for="brief">บรีฟ / รายละเอียดเรื่อง</label><textarea id="brief" placeholder="พล็อต ฉากที่อยากเห็น บุคลิกตัวละคร ฯลฯ"></textarea>
-    <label class="f">NC แบบไหน</label>
+    <h2><b id="briefNo">4</b><span data-t="s4"></span></h2>
+    <label class="f" for="cname"><span data-t="cname"></span> <em>*</em></label><input type="text" id="cname" data-tp="cnameP">
+    <label class="f" for="contact"><span data-t="contact"></span> <em>*</em></label><input type="text" id="contact" data-tp="contactP">
+    <label class="f" for="pair"><span data-t="pair"></span> <em>*</em></label><input type="text" id="pair" data-tp="pairP">
+    <label class="f" data-t="ooc"></label>
+    <div class="opts" id="oocs"></div>
+    <label class="f" for="genre" data-t="genre"></label><input type="text" id="genre" data-tp="genreP">
+    <label class="f" for="brief" data-t="brief"></label><textarea id="brief" data-tp="briefP"></textarea>
+    <label class="f" data-t="nc"></label>
     <div class="opts" id="ncs"></div>
-    <label class="f" for="tw">TW / CW ที่ไม่เอาเด็ดขาด</label><textarea id="tw" placeholder="เช่น ตัวละครตาย, ทำร้ายตัวเอง"></textarea>
+    <label class="f" for="tw" data-t="tw"></label><textarea id="tw" data-tp="twP"></textarea>
   </section>
 </form>
 
 <aside class="slip" id="slip">
-  <h3><span class="dino"></span>ราคาประเมิน</h3>
+  <h3><span class="dino"></span><span data-t="est"></span></h3>
   <div class="big" id="total">฿0</div>
   <div class="hint" id="coverLine"></div>
   <ul id="sum"></ul>
-  <button class="btn" id="pdf" type="button" disabled>บันทึกใบเสนอราคา PDF</button>
-  <div class="msg" id="msg" role="status">เลือกแบบงานก่อนนะ</div>
+  <button class="btn" id="pdf" type="button" disabled data-t="pdfBtn"></button>
+  <div class="msg" id="msg" role="status"></div>
 </aside>
 </main>
 
-<div class="bar"><div><div class="hint" style="margin:0">ราคาประเมิน</div><div class="big" id="total2">฿0</div></div><a href="#slip">ดูใบเสนอราคา</a></div>
+<div class="bar"><div><div class="hint" style="margin:0" data-t="est"></div><div class="big" id="total2">฿0</div></div><a href="#slip" data-t="see"></a></div>
 
 <div id="sheet" aria-hidden="true"></div>
 
@@ -168,88 +171,143 @@ input:focus,textarea:focus{outline:none;border-color:var(--blue)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 {
+const L={
+th:{tag:'เปิดรับคอมมิชชั่นฟิค (TH/EN)',intro:'เลือกแบบงาน ใส่รายละเอียด แล้วดูราคาได้ทันที เสร็จแล้วกดบันทึกใบเสนอราคาเป็น PDF ส่งมาให้ไรต์ได้เลยนะ',
+ s1:'อยากคอมมิชงานแนวไหน',s1h:'เลือกได้ 1 แบบต่อใบเสนอราคา',post:'ลงแบบไหน',s3:'อยากคอมมิชปกไหม?',s3h:'สำหรับเรื่องที่ลงใน ReadAWrite / AO3',
+ coverNo:'ไม่สนใจ',coverYes:'อยากได้ปก',artist:'นักวาด',artMine:'มีนักวาดในใจ',artMineS:'อยากให้ไรต์ติดต่อให้',artWriter:'ให้ไรต์เลือกให้',artWriterS:'ไรต์เลือกแล้วติดต่อเอง',
+ artistName:'ชื่อ / ลิงก์นักวาด',artistNameP:'เช่น @artist บน X',budget:'งบค่าปก (บาท)',budgetP:'เช่น 500',
+ s4:'บรีฟงาน',cname:'ชื่อลูกค้า',cnameP:'ชื่อที่ให้ไรต์เรียก',contact:'ช่องทางติดต่อ',contactP:'เช่น X @yourname / LINE',pair:'คู่',pairP:'จะ A x B หรือ B x A ก็ได้นะ ไรต์อร่อยหมด ♡',
+ ooc:'OOC ได้แค่ไหน',ooc1:'ได้นิดหน่อย',ooc2:'เต็มที่เลยจ้า',genre:'แนวที่อยากได้',genreP:'เช่น โรแมนซ์ ฟลัฟ แองสต์ PWP AU มหาลัย',brief:'บรีฟ / รายละเอียดเรื่อง',briefP:'พล็อต ฉากที่อยากเห็น บุคลิกตัวละคร ฯลฯ',
+ nc:'NC แบบไหน',nc1:'บรรยายหยาบคาย',nc2:'บรรยายละเอียด',nc3:'เข้าโคม',nc4:'ไม่เอา NC',ncCap:'×1.5 แต่ไม่เกิน 100 บาท',
+ tw:'TW / CW ที่ไม่เอาเด็ดขาด',twP:'เช่น ตัวละครตาย, ทำร้ายตัวเอง',est:'ราคาประเมิน',pdfBtn:'บันทึกใบเสนอราคา PDF',see:'ดูใบเสนอราคา',
+ twName:'Thread In Twitter',twSub:'เธรดบน X / Twitter',twQ:'กี่ Tweet ต่อ Thread',twU:'Tweet',oneName:'ฟิคบรรยาย 1 ตอน',oneQ:'กี่คำ',oneU:'คำ',
+ multiName:'ฟิคบรรยายหลายตอน',multiQ:'กี่ตอน',epU:'ตอน',multiMin:'เขียนขั้นต่ำตอนละ 2,000 คำ ถ้าเกิน ไรต์แถมเอง',chatName:'ฟิคแชท',chatMin:'เขียนขั้นต่ำตอนละ 150 บับเบิ้ล ถ้าเกิน ไรต์แถมเอง',
+ pSelf:'ลูกค้ามีเวลา ลงเองโลด!',pWriterTw:'ลงที่แอคไรต์',pQuiet:'ขออ่านเงียบ ๆ',pQuietS:'ส่งไฟล์ docx ให้',pClient:'ลงแอคลูกค้า',pWriter:'ลงแอคไรต์',
+ kType:'แบบงาน',kPost:'ลงแบบ',kCover:'ปก',fee:'ค่าเขียน',coverBudget:'งบปก',
+ mPick:'เลือกแบบงานก่อนนะ',mQty:'ใส่จำนวนก่อนนะ',mMiss:'กรอกให้ครบก่อน: ',mReady:'พร้อมบันทึกแล้ว',mLib:'โหลดตัวสร้าง PDF ไม่สำเร็จ ลองรีเฟรชหน้านะ',mMaking:'กำลังสร้าง PDF...',
+ mSaved:'บันทึกแล้ว ส่งไฟล์ให้ไรต์ได้เลย ♡',mNoDl:'หน้านี้บันทึกไฟล์ไม่ได้ในมุมมองนี้ ลองเปิดลิงก์ในเบราว์เซอร์นะ',mDecl:'ยกเลิกการบันทึกแล้ว',mFail:'บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะ',
+ qTitle:'ใบเสนอราคาคอมมิชชั่นฟิค',qNo:'เลขที่',qDate:'วันที่',qGenre:'แนว',qBrief:'บรีฟ',qTw:'TW / CW ที่ไม่เอา',qDocx:' (ส่ง docx)',qNoCover:'ไม่สนใจ',qMine:'มีนักวาดในใจ: ',qWriter:'ให้ไรต์เลือกนักวาดแล้วติดต่อเอง',qBudget:'งบ ',
+ qFee:'ค่าคอมมิชชั่น',qTotal:'รวมทั้งหมด',qFoot:'ส่งใบเสนอราคานี้ให้ไรต์เพื่อยืนยันคิวและรายละเอียดงาน · ราคานี้เป็นราคาประเมิน ไรต์จะยืนยันอีกครั้ง',file:'ใบเสนอราคา',locale:'th-TH'},
+en:{tag:'Fic commissions open (TH/EN)',ficLang:'Which language do you want the fic in?',qFicLang:'Fic language',intro:'Pick a commission type, fill in the details and see the price right away. When you are done, save the quotation as a PDF and send it to the writer.',
+ s1:'What would you like to commission?',s1h:'One type per quotation',post:'Where should it be posted?',s3:'Would you like a cover?',s3h:'For stories posted on ReadAWrite / AO3',
+ coverNo:'No, thanks',coverYes:'Yes, I want a cover',artist:'Artist',artMine:'I have an artist in mind',artMineS:'Writer will contact them for you',artWriter:'Let the writer choose',artWriterS:'Writer picks and contacts the artist',
+ artistName:'Artist name / link',artistNameP:'e.g. @artist on X',budget:'Cover budget (THB)',budgetP:'e.g. 500',
+ s4:'Brief',cname:'Your name',cnameP:'What should the writer call you?',contact:'Contact',contactP:'e.g. X @yourname / LINE',pair:'Pairing',pairP:'A x B or B x A, either is fine, I enjoy them all ♡',
+ ooc:'How much OOC is okay?',ooc1:'Just a little',ooc2:'Go all out!',genre:'Genre / vibe',genreP:'e.g. romance, fluff, angst, PWP, college AU',brief:'Brief / story details',briefP:'Plot, scenes you want to see, character personalities, etc.',
+ nc:'NC preference',nc1:'Explicit, crude language',nc2:'Explicit, detailed',nc3:'Fade to black',nc4:'No NC',ncCap:'×1.5, max +100 THB',
+ tw:'Hard no TW / CW',twP:'e.g. character death, self-harm',est:'Estimated price',pdfBtn:'Save quotation as PDF',see:'View quotation',
+ twName:'Thread on Twitter',twSub:'Thread on X / Twitter',twQ:'Tweets per thread',twU:'tweets',oneName:'Prose fic, 1 chapter',oneQ:'Word count',oneU:'words',
+ multiName:'Prose fic, multi-chapter',multiQ:'Number of chapters',epU:'chapters',multiMin:'At least 2,000 words per chapter; anything extra is on the writer',chatName:'Chat fic',chatMin:'At least 150 bubbles per chapter; anything extra is on the writer',
+ pSelf:'I have time, I\'ll post it myself!',pWriterTw:'Post on the writer\'s account',pQuiet:'Just for me to read',pQuietS:'Sent as a .docx file',pClient:'Post on my account',pWriter:'Post on the writer\'s account',
+ kType:'Type',kPost:'Posting',kCover:'Cover',fee:'Writing',coverBudget:'cover budget',
+ mPick:'Pick a commission type first',mQty:'Enter an amount first',mMiss:'Please fill in: ',mReady:'Ready to save',mLib:'Could not load the PDF maker. Please refresh the page.',mMaking:'Making the PDF...',
+ mSaved:'Saved! Send the file to the writer ♡',mNoDl:'This view cannot save files. Try opening the link in a browser.',mDecl:'Save cancelled',mFail:'Could not save. Please try again.',
+ qTitle:'Fic commission quotation',qNo:'No.',qDate:'Date',qGenre:'Genre',qBrief:'Brief',qTw:'Hard no TW / CW',qDocx:' (.docx)',qNoCover:'Not interested',qMine:'Artist in mind: ',qWriter:'Writer chooses and contacts the artist',qBudget:'Budget ',
+ qFee:'Commission fee',qTotal:'Total',qFoot:'Send this quotation to the writer to confirm your slot and details · Estimated price, to be confirmed by the writer',file:'Quotation',locale:'en-GB'}};
+let lang='th';try{lang=localStorage.getItem('itcn-lang')||'th'}catch(e){}
+if(!L[lang])lang='th';
+const t=k=>L[lang][k]??L.th[k]??k;
 const TYPES=[
- {id:'tw',name:'Thread In Twitter',sub:'เธรดบน X / Twitter',q:'กี่ Tweet ต่อ Thread',unit:'Tweet',def:20,step:1,price:q=>q*2.5,
-  posts:[['self','ลูกค้ามีเวลา ลงเองโลด!',1.2],['writer','ลงที่แอคไรต์',1]]},
- {id:'one',name:'ฟิคบรรยาย 1 ตอน',sub:'In ReadAWrite',q:'กี่คำ',unit:'คำ',def:3000,step:100,price:q=>q/10*0.5},
- {id:'multi',name:'ฟิคบรรยายหลายตอน',sub:'In ReadAWrite',q:'กี่ตอน',unit:'ตอน',def:3,step:1,price:q=>q*100,min:'เขียนขั้นต่ำตอนละ 2,000 คำ ถ้าเกิน ไรต์แถมเอง'},
- {id:'chat',name:'ฟิคแชท',sub:'In ReadAWrite',q:'กี่ตอน',unit:'ตอน',def:3,step:1,price:q=>q*100,min:'เขียนขั้นต่ำตอนละ 150 บับเบิ้ล ถ้าเกิน ไรต์แถมเอง'}];
-const RAW=[['quiet','ขออ่านเงียบ ๆ','ส่งไฟล์ docx ให้',1.2],['client','ลงแอคลูกค้า','',1.5],['writer','ลงแอคไรต์','',1]];
-const NC=['บรรยายหยาบคาย','บรรยายละเอียด','เข้าโคม','ไม่เอา NC'];
+ {id:'tw',name:'twName',sub:'twSub',q:'twQ',unit:'twU',def:20,step:1,price:q=>q*2.5,posts:[['self','pSelf',1.2],['writer','pWriterTw',1]]},
+ {id:'one',name:'oneName',sub:'',q:'oneQ',unit:'oneU',def:3000,step:100,price:q=>q/10*0.5},
+ {id:'multi',name:'multiName',sub:'',q:'multiQ',unit:'epU',def:3,step:1,price:q=>q*100,min:'multiMin'},
+ {id:'chat',name:'chatName',sub:'',q:'multiQ',unit:'epU',def:3,step:1,price:q=>q*100,min:'chatMin'}];
+const RAW=[['quiet','pQuiet',1.2,'pQuietS'],['client','pClient',1.5],['writer','pWriter',1]];
+const NC=['nc1','nc2','nc3','nc4'];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fmt=n=>'฿'+n.toLocaleString('th-TH',{maximumFractionDigits:2});
-const opt=(name,val,t,s,chk)=>`<label class="opt"><input type="radio" name="${name}" value="${val}"${chk?' checked':''}><span><strong>${t}</strong>${s?`<small>${s}</small>`:''}</span></label>`;
-$('types').innerHTML=TYPES.map(t=>opt('type',t.id,t.name,t.sub)).join('');
-$('ncs').innerHTML=NC.map((n,i)=>opt('nc',n,n+(i<2?' <span style="display:inline;border:0;padding:0;background:none;color:var(--blue)">(×1.5 แต่ไม่เกิน 100 บาท)</span>':''),'',i===3)).join('');
+const fmt=n=>'฿'+n.toLocaleString(t('locale'),{maximumFractionDigits:2});
+const mult=x=>` <span style="display:inline;border:0;padding:0;background:none;color:var(--blue)">(${x})</span>`;
+const opt=(name,val,label,sub,chk)=>`<label class="opt"><input type="radio" name="${name}" value="${val}"${chk?' checked':''}><span><strong>${label}</strong>${sub?`<small>${sub}</small>`:''}</span></label>`;
 const val=n=>(document.querySelector(`input[name=${n}]:checked`)||{}).value;
+const ck=(n,v)=>{if(v==null)return;const e=document.querySelector(`input[name=${n}][value="${CSS.escape(v)}"]`);if(e)e.checked=true};
 let cur=null;
+const subOf=ty=>ty.sub?t(ty.sub):'In ReadAWrite / AO3';
+const postsOf=()=>cur.posts||RAW;
+function drawOpts(){
+  const keep={type:val('type'),post:val('post'),cover:val('cover')||'no',artist:val('artist')||'mine',nc:val('nc')||'nc4',ooc:val('ooc')||'ooc1'};
+  $('types').innerHTML=TYPES.map(ty=>opt('type',ty.id,t(ty.name),subOf(ty))).join('');
+  $('covers').innerHTML=opt('cover','no',t('coverNo'))+opt('cover','yes',t('coverYes'));
+  $('artists').innerHTML=opt('artist','mine',t('artMine'),t('artMineS'))+opt('artist','writer',t('artWriter'),t('artWriterS'));
+  $('oocs').innerHTML=opt('ooc','ooc1',t('ooc1'))+opt('ooc','ooc2',t('ooc2'));
+  $('ncs').innerHTML=NC.map((n,i)=>opt('nc',n,t(n)+(i<2?mult(t('ncCap')):''))).join('');
+  if(cur)$('posts').innerHTML=postsOf().map(p=>opt('post',p[0],t(p[1])+mult('×'+p[2]),p[3]?t(p[3]):'')).join('');
+  Object.entries(keep).forEach(([k,v])=>ck(k,v));
+  if(cur&&!val('post'))document.querySelector('input[name=post]').checked=true;
+}
+function applyLang(){
+  document.documentElement.lang=lang;
+  $('sLang').classList.toggle('hide',lang!=='en');
+  document.querySelectorAll('[data-t]').forEach(e=>e.textContent=t(e.dataset.t));
+  document.querySelectorAll('[data-tp]').forEach(e=>e.placeholder=t(e.dataset.tp));
+  document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===lang));
+  drawOpts();
+  if(cur){$('amtTitle').textContent=t(cur.q);$('qtyLabel').textContent=t(cur.q);$('unit').textContent=t(cur.unit);$('minNote').textContent=cur.min?t(cur.min):''}
+  render();
+}
 function setType(id,keepQty){
-  cur=TYPES.find(t=>t.id===id);if(!cur)return;
-  const posts=cur.posts||RAW.map(r=>[r[0],r[1],r[3],r[2]]);
-  $('posts').innerHTML=posts.map((p,i)=>opt('post',p[0],p[1]+' <span style="display:inline;border:0;padding:0;background:none;color:var(--blue)">(×'+p[2]+')</span>',p[3]||'',i===0)).join('');
-  $('amtTitle').textContent=cur.q;$('qtyLabel').textContent=cur.q;$('unit').textContent=cur.unit;
+  cur=TYPES.find(ty=>ty.id===id);if(!cur)return;
+  $('posts').innerHTML='';drawOpts();
+  $('amtTitle').textContent=t(cur.q);$('qtyLabel').textContent=t(cur.q);$('unit').textContent=t(cur.unit);
   if(!keepQty)$('qty').value=cur.def;$('qty').step=cur.step;
-  $('minNote').textContent=cur.min||'';$('minNote').classList.toggle('hide',!cur.min);
+  $('minNote').textContent=cur.min?t(cur.min):'';$('minNote').classList.toggle('hide',!cur.min);
   const raw=cur.id!=='tw';$('sCover').classList.toggle('hide',!raw);$('briefNo').textContent=raw?4:3;
   ['sAmount','sBrief'].forEach(s=>$(s).classList.remove('hide'));
 }
-function postInfo(){const posts=cur.posts||RAW.map(r=>[r[0],r[1],r[3]]);const v=val('post');return posts.find(p=>p[0]===v)||posts[0]}
+function postInfo(){const ps=postsOf();return ps.find(p=>p[0]===val('post'))||ps[0]}
 function calc(){
   if(!cur)return null;
   const q=Math.max(0,Math.floor(+$('qty').value||0));const p=postInfo();
   let fee=Math.ceil(cur.price(q)*p[2]);
-  if(NC.indexOf(val('nc'))<2&&NC.indexOf(val('nc'))>-1)fee+=Math.min(100,Math.ceil(fee*0.5));
+  if(val('nc')==='nc1'||val('nc')==='nc2')fee+=Math.min(100,Math.ceil(fee*0.5));
   const cover=cur.id!=='tw'&&val('cover')==='yes';
   const budget=cover?Math.max(0,+$('coverBudget').value||0):0;
   return {q,p,fee,cover,budget,total:fee+budget};
 }
 function render(){
-  const r=calc();
   $('coverMore').classList.toggle('hide',val('cover')!=='yes');
   $('artistBox').classList.toggle('hide',val('artist')!=='mine');
-  if(!r){return}
+  const r=calc();
+  if(!r){$('msg').textContent=t('mPick');return}
   $('total').textContent=$('total2').textContent=fmt(r.total);
-  $('coverLine').textContent=r.cover?`ค่าเขียน ${fmt(r.fee)} + งบปก ${fmt(r.budget)}`:'';
-  const items=[['แบบงาน',cur.name+(cur.id==='tw'?'':' · ReadAWrite')],[cur.q,r.q.toLocaleString('th-TH')+' '+cur.unit],['ลงแบบ',r.p[1]]];
-  if(r.cover)items.push(['ปก',val('artist')==='mine'?'มีนักวาดในใจ':'ให้ไรต์เลือก']);
+  $('coverLine').textContent=r.cover?`${t('fee')} ${fmt(r.fee)} + ${t('coverBudget')} ${fmt(r.budget)}`:'';
+  const items=[[t('kType'),t(cur.name)+(cur.id==='tw'?'':' · ReadAWrite / AO3')],[t(cur.q),r.q.toLocaleString(t('locale'))+' '+t(cur.unit)],[t('kPost'),t(r.p[1])]];
+  if(r.cover)items.push([t('kCover'),val('artist')==='mine'?t('artMine'):t('artWriter')]);
   $('sum').innerHTML=items.map(i=>`<li><span>${esc(i[0])}</span><b>${esc(i[1])}</b></li>`).join('');
-  const miss=[['cname','ชื่อลูกค้า'],['contact','ช่องทางติดต่อ'],['pair','คู่']].filter(m=>!$(m[0]).value.trim()).map(m=>m[1]);
-  const ok=r.q>0&&!miss.length;
-  $('pdf').disabled=!ok;
-  $('msg').textContent=r.q<=0?'ใส่จำนวนก่อนนะ':miss.length?'กรอกให้ครบก่อน: '+miss.join(', '):'พร้อมบันทึกแล้ว';
+  const miss=['cname','contact','pair'].filter(k=>!$(k).value.trim()).map(t);
+  $('pdf').disabled=!(r.q>0&&!miss.length);
+  $('msg').textContent=r.q<=0?t('mQty'):miss.length?t('mMiss')+miss.join(', '):t('mReady');
   save();
 }
 const FIELDS=['qty','coverBudget','artistName','cname','contact','pair','genre','brief','tw'];
-function save(){try{const d={type:val('type'),post:val('post'),cover:val('cover'),artist:val('artist'),nc:val('nc'),ooc:val('ooc')};FIELDS.forEach(k=>d[k]=$(k).value);localStorage.setItem('itcn-q',JSON.stringify(d))}catch(e){}}
-function load(){try{const d=JSON.parse(localStorage.getItem('itcn-q')||'null');if(!d||!d.type)return;
-  const ck=(n,v)=>{const e=document.querySelector(`input[name=${n}][value="${CSS.escape(v||'')}"]`);if(e)e.checked=true};
-  ck('type',d.type);FIELDS.forEach(k=>{if(d[k]!=null)$(k).value=d[k]});setType(d.type,true);['post','cover','artist','nc','ooc'].forEach(n=>ck(n,d[n]))}catch(e){}}
+function save(){try{const d={type:val('type'),post:val('post'),cover:val('cover'),artist:val('artist'),nc:val('nc'),ooc:val('ooc'),ficlang:val('ficlang')};FIELDS.forEach(k=>d[k]=$(k).value);localStorage.setItem('itcn-q2',JSON.stringify(d))}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem('itcn-q2')||'null');if(!d||!d.type)return;
+  ck('type',d.type);FIELDS.forEach(k=>{if(d[k]!=null)$(k).value=d[k]});setType(d.type,true);['post','cover','artist','nc','ooc','ficlang'].forEach(n=>ck(n,d[n]))}catch(e){}}
 $('f').addEventListener('change',e=>{if(e.target.name==='type')setType(e.target.value);render()});
 $('f').addEventListener('input',render);
 $('f').addEventListener('submit',e=>e.preventDefault());
-document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{if(!cur)return;const s=cur.step*+b.dataset.step;$('qty').value=Math.max(0,(+$('qty').value||0)+s);render()}));
-load();render();
-/* snow */
+document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{if(!cur)return;$('qty').value=Math.max(0,(+$('qty').value||0)+cur.step*+b.dataset.step);render()}));
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{lang=b.dataset.lang;try{localStorage.setItem('itcn-lang',lang)}catch(e){}applyLang()}));
+drawOpts();load();applyLang();
 $('snow').innerHTML=Array.from({length:26},(_,i)=>`<i style="left:${(i*37)%100}%;animation-duration:${6+(i%5)*2}s;animation-delay:-${i%9}s;transform:scale(${.5+(i%3)*.3})"></i>`).join('');
-/* PDF */
 let dl=null;
 (async()=>{try{dl=window.claude?await window.claude.use('downloads'):null}catch(e){dl=null}})();
 function buildSheet(r){
   const now=new Date();const no='ITCN-'+now.toISOString().slice(2,10).replace(/-/g,'')+'-'+String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0');
-  const rows=[['ชื่อลูกค้า',$('cname').value],['ช่องทางติดต่อ',$('contact').value],['แบบงาน',cur.name+(cur.id==='tw'?'':' (ReadAWrite)')],[cur.q,r.q.toLocaleString('th-TH')+' '+cur.unit+(cur.min?'\n('+cur.min+')':'')],['ลงแบบ',r.p[1]+(r.p[0]==='quiet'?' (ส่ง docx)':'')],
-    ['คู่',$('pair').value],['OOC ได้แค่ไหน',val('ooc')],['แนว',$('genre').value||'-'],['บรีฟ',$('brief').value||'-'],['NC',val('nc')],['TW / CW ที่ไม่เอา',$('tw').value||'-']];
-  if(cur.id!=='tw'){rows.push(['ปก',r.cover?(val('artist')==='mine'?'มีนักวาดในใจ: '+($('artistName').value||'-'):'ให้ไรต์เลือกนักวาดแล้วติดต่อเอง')+'\nงบ '+fmt(r.budget):'ไม่สนใจ'])}
-  $('sheet').innerHTML=`<div class="top"><img src="logo.png" alt=""><div><h1>In the Cold Night</h1><div>ใบเสนอราคาคอมมิชชั่นฟิค</div></div><div class="meta">เลขที่ ${esc(no)}<br>วันที่ ${esc(now.toLocaleDateString('th-TH',{dateStyle:'long'}))}</div></div>
+  const rows=[...(lang==='en'?[[t('qFicLang'),val('ficlang')]]:[]),[t('cname'),$('cname').value],[t('contact'),$('contact').value],[t('kType'),t(cur.name)+(cur.id==='tw'?'':' (ReadAWrite / AO3)')],
+    [t(cur.q),r.q.toLocaleString(t('locale'))+' '+t(cur.unit)+(cur.min?'\n('+t(cur.min)+')':'')],[t('kPost'),t(r.p[1])+(r.p[0]==='quiet'?t('qDocx'):'')],
+    [t('pair'),$('pair').value],[t('ooc'),t(val('ooc'))],[t('qGenre'),$('genre').value||'-'],[t('qBrief'),$('brief').value||'-'],[t('nc'),t(val('nc'))],[t('qTw'),$('tw').value||'-']];
+  if(cur.id!=='tw')rows.push([t('kCover'),r.cover?(val('artist')==='mine'?t('qMine')+($('artistName').value||'-'):t('qWriter'))+'\n'+t('qBudget')+fmt(r.budget):t('qNoCover')]);
+  $('sheet').innerHTML=`<div class="top"><img src="logo.png" alt=""><div><h1>In the Cold Night</h1><div>${esc(t('qTitle'))}</div></div><div class="meta">${esc(t('qNo'))} ${esc(no)}<br>${esc(t('qDate'))} ${esc(now.toLocaleDateString(t('locale'),{dateStyle:'long'}))}</div></div>
   <table>${rows.map(x=>`<tr><td>${esc(x[0])}</td><td>${esc(x[1])}</td></tr>`).join('')}</table>
-  <div class="tot">${r.cover?`<div><span>ค่าคอมมิชชั่น</span><span>${fmt(r.fee)}</span></div><div><span>งบค่าปก</span><span>${fmt(r.budget)}</span></div>`:''}<div class="g"><span>รวมทั้งหมด</span><span>${fmt(r.total)}</span></div></div>
-  <div class="foot">ส่งใบเสนอราคานี้ให้ไรต์เพื่อยืนยันคิวและรายละเอียดงาน · ราคานี้เป็นราคาประเมิน ไรต์จะยืนยันอีกครั้ง</div>`;
+  <div class="tot">${r.cover?`<div><span>${esc(t('qFee'))}</span><span>${fmt(r.fee)}</span></div><div><span>${esc(t('budget'))}</span><span>${fmt(r.budget)}</span></div>`:''}<div class="g"><span>${esc(t('qTotal'))}</span><span>${fmt(r.total)}</span></div></div>
+  <div class="foot">${esc(t('qFoot'))}</div>`;
   return no;
 }
 $('pdf').addEventListener('click',async()=>{
   const r=calc();if(!r)return;const btn=$('pdf');
-  if(!window.html2canvas||!window.jspdf){$('msg').textContent='โหลดตัวสร้าง PDF ไม่สำเร็จ ลองรีเฟรชหน้านะ';return}
-  btn.disabled=true;$('msg').textContent='กำลังสร้าง PDF...';
+  if(!window.html2canvas||!window.jspdf){$('msg').textContent=t('mLib');return}
+  btn.disabled=true;$('msg').textContent=t('mMaking');
   try{
     const no=buildSheet(r);await document.fonts.ready;
     const cv=await html2canvas($('sheet'),{scale:2,backgroundColor:'#ffffff'});
@@ -259,13 +317,12 @@ $('pdf').addEventListener('click',async()=>{
     while(y<cv.height){const h=Math.min(pxPerPage,cv.height-y);const c=document.createElement('canvas');c.width=cv.width;c.height=h;
       c.getContext('2d').drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);
       if(!first)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',.92),'JPEG',0,0,pw,h*pw/cv.width);first=false;y+=h}
-    const blob=pdf.output('blob');
-    const fname=`ใบเสนอราคา-InTheColdNight-${no}.pdf`;
-    if(!window.claude){pdf.save(fname);$('msg').textContent='บันทึกแล้ว ส่งไฟล์ให้ไรต์ได้เลย ♡';return}
-    if(!dl){$('msg').textContent='หน้านี้บันทึกไฟล์ไม่ได้ในมุมมองนี้ ลองเปิดลิงก์ในเบราว์เซอร์นะ';return}
-    await dl.save({filename:fname,data:blob});
-    $('msg').textContent='บันทึกแล้ว ส่งไฟล์ให้ไรต์ได้เลย ♡';
-  }catch(e){$('msg').textContent=e&&e.code==='declined'?'ยกเลิกการบันทึกแล้ว':'บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะ'}
+    const fname=`${t('file')}-InTheColdNight-${no}.pdf`;
+    if(!window.claude){pdf.save(fname);$('msg').textContent=t('mSaved');return}
+    if(!dl){$('msg').textContent=t('mNoDl');return}
+    await dl.save({filename:fname,data:pdf.output('blob')});
+    $('msg').textContent=t('mSaved');
+  }catch(e){$('msg').textContent=e&&e.code==='declined'?t('mDecl'):t('mFail')}
   finally{btn.disabled=false}
 });
 }
